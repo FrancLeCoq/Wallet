@@ -11,165 +11,126 @@
 body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One',cursive;min-height:100vh;color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;}
 .card{width:100%;max-width:360px;background:linear-gradient(145deg,rgba(13,5,32,0.98),rgba(30,10,65,0.98));border:2px solid rgba(180,100,255,0.35);border-radius:24px;padding:28px 22px;box-shadow:0 0 60px rgba(120,40,200,0.4);}
 
-/* Back */
 .back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#a78bfa;font-size:13px;font-family:'Fredoka One',cursive;cursor:pointer;margin-bottom:18px;padding:4px 0;opacity:0.8;}
 .back-btn::before{content:'←';font-size:16px;}
 
-/* Header */
-.header{text-align:center;margin-bottom:22px}
+.header{text-align:center;margin-bottom:20px}
 .header .logo{font-size:44px;margin-bottom:6px}
 .header h1{font-family:'Bangers',cursive;font-size:26px;color:#FFD700;letter-spacing:3px;text-shadow:0 0 20px #FFD700;margin-bottom:6px}
 .header .sub{font-size:12px;color:#c9aaee;line-height:1.7}
 .header .sub b{color:#FFD700}
 
-/* Badge $FRANC OK */
-.badge-ok{background:linear-gradient(135deg,rgba(22,163,74,0.18),rgba(15,100,50,0.12));border:2px solid rgba(163,230,53,0.55);border-radius:18px;padding:22px 16px;text-align:center;margin-bottom:16px}
-.badge-ok .ico{font-size:46px;margin-bottom:8px}
-.badge-ok .title{font-family:'Bangers',cursive;font-size:26px;color:#a3e635;letter-spacing:2px;text-shadow:0 0 14px rgba(163,230,53,0.5)}
-.badge-ok .info{font-size:13px;color:#86efac;margin-top:8px;line-height:1.9}
-.addr-pill{display:inline-block;font-size:11px;font-family:monospace;background:rgba(0,0,0,0.3);padding:4px 12px;border-radius:8px;color:#6ee7b7;margin-top:8px}
-
-/* Badge no FRANC */
-.badge-warn{background:rgba(217,119,6,0.1);border:1.5px solid rgba(217,119,6,0.45);border-radius:16px;padding:16px;text-align:center;margin-bottom:16px}
-.badge-warn .ico{font-size:36px;margin-bottom:6px}
-.badge-warn .title{font-family:'Bangers',cursive;font-size:20px;color:#fcd34d;letter-spacing:2px}
-.badge-warn .info{font-size:12px;color:#fcd34d;margin-top:6px;line-height:1.6}
+/* Statut badge — compact, en haut */
+.status-bar{border-radius:12px;padding:10px 14px;margin-bottom:20px;font-size:12px;line-height:1.6;display:none}
+.status-bar.franc{background:rgba(22,163,74,0.15);border:1.5px solid rgba(163,230,53,0.5);color:#86efac}
+.status-bar.no-franc{background:rgba(217,119,6,0.1);border:1.5px solid rgba(217,119,6,0.4);color:#fcd34d}
+.status-bar.checking{background:rgba(100,100,100,0.15);border:1px solid rgba(150,150,150,0.3);color:#aaa}
 
 /* Options */
-.option{margin-bottom:14px}
-.option-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.option-num{background:linear-gradient(135deg,#6d28d9,#4c1d95);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:14px;flex-shrink:0}
-.option-title{font-family:'Bangers',cursive;font-size:15px;letter-spacing:2px;color:#c084fc}
+.opt-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.opt-num{background:linear-gradient(135deg,#6d28d9,#4c1d95);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:15px;color:#fff;flex-shrink:0}
+.opt-title{font-family:'Bangers',cursive;font-size:15px;letter-spacing:2px;color:#c084fc}
 
 /* Input */
-.input-wrap{position:relative}
-.input-wrap input{width:100%;padding:14px 16px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(168,85,247,0.4);border-radius:12px;color:#fff;font-size:13px;font-family:'Fredoka One',cursive;outline:none;box-sizing:border-box;transition:border-color 0.2s;}
-.input-wrap input:focus{border-color:rgba(168,85,247,0.9);}
-.input-wrap input::placeholder{color:rgba(255,255,255,0.3)}
+.input-field{width:100%;padding:16px;background:rgba(255,255,255,0.07);border:2px solid rgba(168,85,247,0.4);border-radius:14px;color:#fff;font-size:14px;font-family:'Fredoka One',cursive;outline:none;box-sizing:border-box;transition:border-color 0.2s;}
+.input-field:focus{border-color:rgba(168,85,247,0.9);}
+.input-field::placeholder{color:rgba(255,255,255,0.25)}
 .hint{font-size:10px;margin-top:5px;text-align:right;min-height:14px;color:#888}
 
-/* Bot option */
-.bot-card{background:rgba(109,40,217,0.1);border:1px solid rgba(109,40,217,0.35);border-radius:12px;padding:14px 16px}
-.bot-card p{font-size:13px;color:#c9aaee;line-height:1.9}
-.bot-card .cmd{display:inline-block;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.35);border-radius:6px;padding:2px 10px;color:#FFD700;font-family:monospace;font-size:13px;font-weight:bold;}
-.bot-card a{color:#a78bfa;text-decoration:none;font-weight:bold}
-.bot-card a:hover{text-decoration:underline}
+/* Option 2 */
+.opt2-card{background:rgba(109,40,217,0.1);border:1px solid rgba(109,40,217,0.3);border-radius:12px;padding:14px 16px}
+.opt2-card .link-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.opt2-card .link-url{font-family:monospace;font-size:13px;color:#a78bfa;word-break:break-all;cursor:pointer;text-decoration:underline dotted}
+.opt2-card .step{font-size:12px;color:#c9aaee;line-height:1.8;padding-top:8px;border-top:1px solid rgba(168,85,247,0.15)}
+.cmd{display:inline-block;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3);border-radius:5px;padding:1px 8px;color:#FFD700;font-family:monospace;font-size:13px;font-weight:bold}
 
-/* Pas dans Telegram */
+/* Hors Telegram */
 .not-tg{background:rgba(100,100,100,0.1);border:1px solid rgba(150,150,150,0.2);border-radius:14px;padding:20px 16px;text-align:center}
 .not-tg .ico{font-size:38px;margin-bottom:10px}
 .not-tg p{font-size:13px;color:#aaa;line-height:1.7;margin-bottom:12px}
 .not-tg .steps{font-size:12px;color:#c9aaee;text-align:left;line-height:2.2}
 .not-tg a{color:#FFD700;font-weight:bold;text-decoration:none}
-.not-tg .cmd{display:inline-block;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3);border-radius:5px;padding:1px 8px;color:#FFD700;font-family:monospace;font-size:12px;}
-
-/* Divider */
-.divider{border:none;border-top:1px solid rgba(168,85,247,0.2);margin:16px 0}
 
 /* Boutons */
-.btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:16px;font-family:'Bangers',cursive;letter-spacing:2px;cursor:pointer;color:#fff;margin-top:10px;touch-action:manipulation;transition:all 0.15s;display:block;}
+.btn{width:100%;padding:15px;border:none;border-radius:14px;font-size:17px;font-family:'Bangers',cursive;letter-spacing:2px;cursor:pointer;color:#fff;margin-top:10px;touch-action:manipulation;transition:all 0.15s;display:block}
 .btn:active{transform:scale(0.97);opacity:0.85}
-.btn-play {background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 4px 20px rgba(22,163,74,0.4)}
-.btn-link {background:linear-gradient(135deg,#0ea5e9,#0284c7);box-shadow:0 4px 20px rgba(14,165,233,0.4)}
-.btn-gray {background:rgba(100,80,150,0.4);border:1px solid rgba(168,85,247,0.3);box-shadow:none}
+.btn-play{background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 4px 20px rgba(22,163,74,0.4)}
+.btn-cyan{background:linear-gradient(135deg,#0ea5e9,#0284c7);box-shadow:0 4px 20px rgba(14,165,233,0.4)}
 
-.loading{color:#c9aaee;font-size:13px;margin:8px 0;text-align:center;min-height:18px}
+.divider{border:none;border-top:1px solid rgba(168,85,247,0.2);margin:18px 0}
+.loading{color:#c9aaee;font-size:12px;margin:6px 0;text-align:center;min-height:16px}
 </style>
 </head>
 <body>
 <div class="card">
   <button class="back-btn" onclick="goBack()">Back to game</button>
 
-  <!-- Header -->
   <div class="header">
     <div class="logo">🐓</div>
     <h1>LE COQ FRANCIS</h1>
-    <p class="sub">
-      Connect your Solana address.<br>
-      Hold <b>$FRANC</b> → all bonuses unlock instantly!<br>
-      <b>10 lives</b> &bull; <b>+1 life</b>/100 eggs &bull; <b style="color:#00eeff">triple shot</b>
-    </p>
+    <p class="sub">Connect your Solana address.<br>Hold <b>$FRANC</b> → all bonuses unlock instantly!<br><b>10 lives</b> &bull; <b>+1 life</b>/100 eggs &bull; <b style="color:#00eeff">triple shot</b></p>
   </div>
 
-  <div class="loading" id="loadingMsg">🔄 Checking your status...</div>
+  <!-- Statut compact (affiché si wallet déjà lié) -->
+  <div class="status-bar checking" id="statusBar">🔄 Checking...</div>
 
-  <!-- ① $FRANC détecté -->
-  <div id="secFrancOk" style="display:none">
-    <div class="badge-ok">
-      <div class="ico">✅</div>
-      <div class="title">$FRANC DETECTED!</div>
-      <div class="info" id="francInfo">All bonuses active!</div>
-      <div class="addr-pill" id="francAddr"></div>
-    </div>
-    <button class="btn btn-play" onclick="goBack()">🎮 PLAY NOW</button>
-    <button class="btn btn-gray" onclick="showConnect()" style="margin-top:8px;font-size:13px">🔗 Change wallet</button>
-  </div>
-
-  <!-- ② Wallet sans $FRANC -->
-  <div id="secNoFranc" style="display:none">
-    <div class="badge-warn">
-      <div class="ico">⚠️</div>
-      <div class="title">WALLET CONNECTED</div>
-      <div class="info">No $FRANC found — buy $FRANC to unlock bonuses!</div>
-      <div class="addr-pill" id="noFrancAddr"></div>
-    </div>
-    <button class="btn btn-play" onclick="goBack()">🎮 Play with 1 life</button>
-    <button class="btn btn-gray" onclick="showConnect()" style="margin-top:8px;font-size:13px">🔗 Change wallet</button>
-  </div>
-
-  <!-- ③ Formulaire de connexion -->
-  <div id="secConnect" style="display:none">
-
-    <!-- Option 1 : Saisie manuelle -->
-    <div class="option">
-      <div class="option-head">
-        <div class="option-num">1</div>
-        <div class="option-title">ENTER YOUR ADDRESS</div>
-      </div>
-      <div class="input-wrap">
-        <input id="walletInput" type="text"
-          placeholder="Paste your Solana address here..."
-          oninput="validateAddr(this)"
-          autocomplete="off" autocorrect="off" spellcheck="false"/>
-      </div>
-      <div class="hint" id="addrHint">Valid Solana address (32–44 characters)</div>
-      <button id="linkBtn" class="btn btn-link" onclick="doLink()" disabled style="opacity:0.5;margin-top:6px">✅ Link my wallet</button>
-      <div class="loading" id="linkMsg"></div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- Option 2 : Via bot -->
-    <div class="option">
-      <div class="option-head">
-        <div class="option-num">2</div>
-        <div class="option-title">VIA TELEGRAM BOT</div>
-      </div>
-      <div class="bot-card">
-        <p>
-          Open <a href="https://t.me/FrancisLeCoqBot" onclick="openBot(event)">@FrancisLeCoqBot</a><br>
-          Send <span class="cmd">/connect</span> then paste your address<br>
-          <span style="font-size:11px;color:#888">Your wallet links automatically.</span>
-        </p>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ④ Hors Telegram -->
+  <!-- Hors Telegram -->
   <div id="secNotTg" style="display:none">
     <div class="not-tg">
       <div class="ico">📱</div>
       <p>Open this page <b style="color:#fff">inside Telegram</b> to connect your wallet.</p>
       <div class="steps">
-        <b>Option 1 — Game button:</b><br>
-        Open any game → tap the wallet button<br><br>
-        <b>Option 2 — Direct link:</b><br>
+        <b>Direct link:</b><br>
         <a href="https://t.me/FrancisLeCoqBot/wallet">t.me/FrancisLeCoqBot/wallet</a><br><br>
-        <b>Option 3 — Bot:</b><br>
+        <b>Via bot:</b><br>
         <a href="https://t.me/FrancisLeCoqBot">@FrancisLeCoqBot</a> → send <span class="cmd">/connect</span>
       </div>
     </div>
+  </div>
+
+  <!-- Formulaire principal (visible dans Telegram) -->
+  <div id="secMain" style="display:none">
+
+    <!-- Option 1 : Saisie manuelle -->
+    <div style="margin-bottom:6px">
+      <div class="opt-head">
+        <div class="opt-num">1</div>
+        <div class="opt-title">ENTER YOUR WALLET ADDRESS</div>
+      </div>
+      <input class="input-field" id="walletInput" type="text"
+        placeholder="Paste your Solana address here..."
+        oninput="validateAddr(this)"
+        autocomplete="off" autocorrect="off" spellcheck="false"/>
+      <div class="hint" id="addrHint">Solana address — 32 to 44 characters</div>
+      <button id="linkBtn" class="btn btn-cyan" onclick="doLink()" disabled style="opacity:0.5">✅ Link my wallet</button>
+      <div class="loading" id="linkMsg"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Option 2 : Direct link -->
+    <div>
+      <div class="opt-head">
+        <div class="opt-num">2</div>
+        <div class="opt-title">DIRECT LINK</div>
+      </div>
+      <div class="opt2-card">
+        <div class="link-row">
+          <span style="font-size:20px">🔗</span>
+          <span class="link-url" onclick="openWallet()">t.me/FrancisLeCoqBot/wallet</span>
+        </div>
+        <div class="step">
+          Open the link above in Telegram,<br>
+          then send <span class="cmd">/connect</span> to @FrancisLeCoqBot
+        </div>
+      </div>
+    </div>
+
+    <!-- Bouton Play si déjà connecté avec $FRANC -->
+    <div id="playSection" style="display:none;margin-top:4px">
+      <button class="btn btn-play" onclick="goBack()">🎮 PLAY NOW WITH 10 LIVES</button>
+    </div>
+
   </div>
 
 </div>
@@ -179,84 +140,105 @@ const GAME_URL = 'https://franclecoq.github.io/FrancRun/';
 const tg = window.Telegram?.WebApp;
 if(tg){tg.ready();tg.expand();}
 
-const secs={
-  loading: document.getElementById('loadingMsg'),
-  francOk: document.getElementById('secFrancOk'),
-  noFranc: document.getElementById('secNoFranc'),
-  connect: document.getElementById('secConnect'),
-  notTg:   document.getElementById('secNotTg'),
-};
-function hide(){Object.values(secs).forEach(s=>{if(s)s.style.display='none';});}
+const statusBar  = document.getElementById('statusBar');
+const secNotTg   = document.getElementById('secNotTg');
+const secMain    = document.getElementById('secMain');
+const playSection= document.getElementById('playSection');
 
-window.addEventListener('load',async()=>{
-  if(!tg?.initData){hide();secs.notTg.style.display='block';return;}
+window.addEventListener('load', async()=>{
+  if(!tg?.initData){
+    statusBar.style.display='none';
+    secNotTg.style.display='block';
+    return;
+  }
+  statusBar.className='status-bar checking';
+  statusBar.style.display='block';
+  statusBar.textContent='🔄 Checking your status...';
+  secMain.style.display='block';
   await checkStatus();
 });
 
 async function checkStatus(){
-  hide();secs.loading.style.display='block';secs.loading.textContent='🔄 Checking your status...';
   try{
-    const res=await fetch(BACKEND+'/check-franc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({initData:tg.initData})});
-    const d=await res.json();hide();
-    if(!d.walletLinked){
-      secs.connect.style.display='block';
-    } else if(d.hasFranc){
+    const res=await fetch(BACKEND+'/check-franc',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({initData:tg.initData})
+    });
+    const d=await res.json();
+    console.log('check-franc:', JSON.stringify(d));
+
+    if(d.walletLinked && d.hasFranc){
       const lives=10+Math.floor((d.totalEggs||0)/100);
       const bal=d.balance?Number(d.balance).toLocaleString():'?';
       const short=d.walletAddress?d.walletAddress.slice(0,6)+'...'+d.walletAddress.slice(-4):'';
-      document.getElementById('francInfo').innerHTML=
-        `Balance: <b style="color:#FFD700">${bal} $FRANC</b><br>`+
-        `<b style="color:#FFD700">${lives} lives</b> &bull; Triple shot <b style="color:#00eeff">active 🔫</b>`;
-      document.getElementById('francAddr').textContent=short;
-      secs.francOk.style.display='block';
-    } else {
+      statusBar.className='status-bar franc';
+      statusBar.innerHTML=`✅ <b style="color:#a3e635">$FRANC detected!</b> ${bal} $FRANC &bull; <b style="color:#FFD700">${lives} lives</b> active<br><span style="font-size:10px;color:#6ee7b7">${short}</span>`;
+      playSection.style.display='block';
+    } else if(d.walletLinked && !d.hasFranc){
       const short=d.walletAddress?d.walletAddress.slice(0,6)+'...'+d.walletAddress.slice(-4):'';
-      document.getElementById('noFrancAddr').textContent=short;
-      secs.noFranc.style.display='block';
+      statusBar.className='status-bar no-franc';
+      statusBar.innerHTML=`⚠️ Wallet connected — no $FRANC found<br><span style="font-size:10px">${short}</span>`;
+      playSection.style.display='none';
+    } else {
+      statusBar.style.display='none';
+      playSection.style.display='none';
     }
   }catch(e){
-    hide();secs.loading.style.display='block';secs.loading.textContent='❌ Connection error — please retry.';
-    setTimeout(()=>{hide();secs.connect.style.display='block';},2000);
+    statusBar.style.display='none';
   }
 }
 
-function showConnect(){
-  hide();secs.connect.style.display='block';
-  document.getElementById('walletInput').value='';
-  document.getElementById('addrHint').textContent='Valid Solana address (32–44 characters)';
-  document.getElementById('addrHint').style.color='#888';
-  const btn=document.getElementById('linkBtn');btn.disabled=true;btn.style.opacity='0.5';btn.textContent='✅ Link my wallet';
-  document.getElementById('linkMsg').textContent='';
-}
-
 function validateAddr(input){
-  const val=input.value.trim();const valid=/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
-  const btn=document.getElementById('linkBtn');const hint=document.getElementById('addrHint');
-  if(valid){input.style.borderColor='rgba(163,230,53,0.7)';hint.textContent='✅ Valid address';hint.style.color='#86efac';btn.disabled=false;btn.style.opacity='1';}
-  else{input.style.borderColor=val.length>5?'rgba(255,80,80,0.6)':'rgba(168,85,247,0.4)';hint.textContent=val.length>5?'❌ Invalid address':'Valid Solana address (32–44 characters)';hint.style.color=val.length>5?'#fca5a5':'#888';btn.disabled=true;btn.style.opacity='0.5';}
+  const val=input.value.trim();
+  const valid=/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
+  const btn=document.getElementById('linkBtn');
+  const hint=document.getElementById('addrHint');
+  if(valid){
+    input.style.borderColor='rgba(163,230,53,0.7)';
+    hint.textContent='✅ Valid address';hint.style.color='#86efac';
+    btn.disabled=false;btn.style.opacity='1';
+  } else {
+    input.style.borderColor=val.length>5?'rgba(255,80,80,0.6)':'rgba(168,85,247,0.4)';
+    hint.textContent=val.length>5?'❌ Invalid address':'Solana address — 32 to 44 characters';
+    hint.style.color=val.length>5?'#fca5a5':'#888';
+    btn.disabled=true;btn.style.opacity='0.5';
+  }
 }
 
 async function doLink(){
   const address=(document.getElementById('walletInput')?.value||'').trim();
   if(!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address))return;
-  const btn=document.getElementById('linkBtn');const msg=document.getElementById('linkMsg');
+  const btn=document.getElementById('linkBtn');
+  const msg=document.getElementById('linkMsg');
   btn.textContent='⏳ Linking...';btn.disabled=true;btn.style.opacity='0.6';
   msg.textContent='Checking $FRANC balance on Solana...';
   try{
-    const res=await fetch(BACKEND+'/link-wallet',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({initData:tg.initData,wallet:address})});
+    const res=await fetch(BACKEND+'/link-wallet',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({initData:tg.initData,wallet:address})
+    });
     const data=await res.json();
-    if(data.ok){msg.textContent='';await checkStatus();}
-    else{msg.textContent='❌ '+(data.error||'Error — try option 2 below.');btn.textContent='✅ Link my wallet';btn.disabled=false;btn.style.opacity='1';}
+    if(data.ok){
+      msg.textContent='';
+      btn.textContent='✅ Link my wallet';
+      document.getElementById('walletInput').value='';
+      document.getElementById('addrHint').textContent='Solana address — 32 to 44 characters';
+      document.getElementById('addrHint').style.color='#888';
+      btn.disabled=true;btn.style.opacity='0.5';
+      await checkStatus();
+    } else {
+      msg.textContent='❌ '+(data.error||'Error — try option 2.');
+      btn.textContent='✅ Link my wallet';btn.disabled=false;btn.style.opacity='1';
+    }
   }catch(e){
-    msg.textContent='❌ Connection error — try option 2 below.';
+    msg.textContent='❌ Connection error — try option 2.';
     btn.textContent='✅ Link my wallet';btn.disabled=false;btn.style.opacity='1';
   }
 }
 
-function openBot(e){
-  e.preventDefault();
-  if(tg) tg.openTelegramLink('https://t.me/FrancisLeCoqBot');
-  else window.open('https://t.me/FrancisLeCoqBot','_blank');
+function openWallet(){
+  if(tg) tg.openTelegramLink('https://t.me/FrancisLeCoqBot/wallet');
+  else window.open('https://t.me/FrancisLeCoqBot/wallet','_blank');
 }
 
 function goBack(){if(tg)tg.close();else window.location.href=GAME_URL;}
