@@ -1,0 +1,154 @@
+// ══════════════════════════════════════════════════════════════
+//  link-wallet — Edge Function Supabase
+//  Lie une adresse Solana à un utilisateur Telegram
+//  Vérifie le solde $FRANC en temps réel
+//  Appelée depuis connect-wallet.html (Mini App Telegram)
+// ══════════════════════════════════════════════════════════════
+
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+const FRANC_MINT = 'A5daStchQDABqVvdVBdy98vubEYxjxVpFPkQuicQpump'
+const SOLANA_RPC = 'https://api.mainnet-beta.solana.com'
+
+// ── Valide une adresse Solana ─────────────────────────────────
+function isValidSolana(addr: string): boolean {
+  return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(addr.trim())
+}
+
+// ── Vérifie solde $FRANC sur Solana ──────────────────────────
+async function getFrancBalance(walletAddress: string): Promise<number> {
+  try {
+    const res = await fetch(SOLANA_RPC, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0', id: 1,
+        method: 'getTokenAccountsByOwner',
+        params: [walletAddress, { mint: FRANC_MINT }, { encoding: 'jsonParsed' }]
+      })
+    })
+    const data = await res.json()
+    const accounts = data?.result?.value ?? []
+    if (!accounts.length) return 0
+    return accounts[0].account.data.parsed.info.tokenAmount.uiAmount ?? 0
+  } catch {
+    return 0
+  }
+}
+
+// ── Parse le telegram_id depuis initData ──────────────────────
+function parseTelegramId(initData: string): string | null {
+  try {
+    const params = new URLSearchParams(initData)
+    const userStr = params.get('user')
+    if (!userStr) return null
+    const user = JSON.parse(decodeURIComponent(userStr))
+    return user?.id?.toString() ?? null
+  } catch {
+    return null
+  }
+}
+
+function parseTelegramUser(initData: string): { id: string; name: string; username: string | null } | null {
+  try {
+    const params = new URLSearchParams(initData)
+    const userStr = params.get('user')
+    if (!userStr) return null
+    const user = JSON.parse(decodeURIComponent(userStr))
+    return {
+      id: user.id.toString(),
+      name: user.first_name || 'Player',
+      username: user.username ?? null
+    }
+  } catch {
+    return null
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  HANDLER PRINCIPAL
+// ══════════════════════════════════════════════════════════════
+Deno.serve(async (req) => {
+  // CORS
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      }
+    })
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+  }
+
+  try {
+    const body = await req.json()
+    const { initData, wallet } = body
+
+    // ── Validation ────────────────────────────────────────────
+    if (!initData) {
+      return new Response(JSON.stringify({ ok: false, error: 'Missing initData' }), { headers, status: 400 })
+    }
+    if (!wallet || !isValidSolana(wallet)) {
+      return new Response(JSON.stringify({ ok: false, error: 'Invalid Solana address' }), { headers, status: 400 })
+    }
+
+    // ── Parse utilisateur Telegram ───────────────────────────
+    const tgUser = parseTelegramUser(initData)
+    if (!tgUser) {
+      return new Response(JSON.stringify({ ok: false, error: 'Invalid Telegram session' }), { headers, status: 401 })
+    }
+
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    )
+
+    // ── Vérifie le solde $FRANC ───────────────────────────────
+    const balance  = await getFrancBalance(wallet.trim())
+    const hasFranc = balance > 0
+
+    // ── Upsert joueur ─────────────────────────────────────────
+    await supabase.rpc('upsert_player', {
+      p_telegram_id: tgUser.id,
+      p_name:        tgUser.name,
+      p_username:    tgUser.username,
+      p_game_id:     'francrun'
+    }).catch(() => {}) // Non bloquant si la fonction n'existe pas
+
+    // ── Lie le wallet ─────────────────────────────────────────
+    const { error } = await supabase.from('wallets').upsert({
+      telegram_id:        tgUser.id,
+      wallet_address:     wallet.trim(),
+      franc_balance:      balance,
+      has_franc:          hasFranc,
+      balance_checked_at: new Date().toISOString(),
+      updated_at:         new Date().toISOString()
+    }, { onConflict: 'telegram_id' })
+
+    if (error) {
+      console.error('Wallet upsert error:', error)
+      return new Response(JSON.stringify({ ok: false, error: 'Database error', detail: error.message }), { headers, status: 500 })
+    }
+
+    // ── Réponse ───────────────────────────────────────────────
+    return new Response(JSON.stringify({
+      ok:            true,
+      hasFranc,
+      balance,
+      walletAddress: wallet.trim(),
+      lives:         hasFranc ? 10 : 1,
+      message:       hasFranc
+        ? `✅ Wallet linked! $FRANC detected — 10 lives unlocked!`
+        : `✅ Wallet linked. No $FRANC found — 1 life.`
+    }), { headers })
+
+  } catch (err) {
+    console.error('link-wallet error:', err)
+    return new Response(JSON.stringify({ ok: false, error: 'Internal error' }), { headers, status: 500 })
+  }
+})
