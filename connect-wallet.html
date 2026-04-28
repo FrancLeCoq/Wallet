@@ -10,57 +10,38 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One',cursive;min-height:100vh;color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;}
 .card{width:100%;max-width:360px;background:linear-gradient(145deg,rgba(13,5,32,0.98),rgba(30,10,65,0.98));border:2px solid rgba(180,100,255,0.35);border-radius:24px;padding:28px 22px;box-shadow:0 0 60px rgba(120,40,200,0.4);}
-
-/* Back */
 .back-btn{display:flex;align-items:center;gap:6px;background:rgba(109,40,217,0.2);border:1px solid rgba(168,85,247,0.4);color:#a78bfa;font-size:14px;font-family:'Fredoka One',cursive;cursor:pointer;margin-bottom:18px;padding:8px 14px;border-radius:10px;width:100%;touch-action:manipulation;transition:all 0.15s;}
 .back-btn:active{opacity:0.7;transform:scale(0.97)}
 .back-btn::before{content:'←';font-size:18px;font-weight:bold}
-
-/* Header */
-.header{text-align:center;margin-bottom:22px}
+.header{text-align:center;margin-bottom:20px}
 .header .logo{font-size:44px;margin-bottom:6px}
 .header h1{font-family:'Bangers',cursive;font-size:26px;color:#FFD700;letter-spacing:3px;text-shadow:0 0 20px #FFD700;margin-bottom:6px}
 .header .sub{font-size:12px;color:#c9aaee;line-height:1.7}
 .header .sub b{color:#FFD700}
-
-/* Status compact */
+/* Status */
 .status-bar{border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:12px;line-height:1.6;display:none}
 .status-bar.franc{background:rgba(22,163,74,0.15);border:1.5px solid rgba(163,230,53,0.5);color:#86efac}
 .status-bar.no-franc{background:rgba(217,119,6,0.1);border:1.5px solid rgba(217,119,6,0.4);color:#fcd34d}
-
-/* Option header */
+/* Option */
 .opt-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .opt-num{background:linear-gradient(135deg,#6d28d9,#4c1d95);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:15px;color:#fff;flex-shrink:0}
 .opt-title{font-family:'Bangers',cursive;font-size:15px;letter-spacing:2px;color:#c084fc}
-
 /* Input */
 .input-field{width:100%;padding:16px;background:rgba(255,255,255,0.07);border:2px solid rgba(168,85,247,0.4);border-radius:14px;color:#fff;font-size:14px;font-family:'Fredoka One',cursive;outline:none;box-sizing:border-box;transition:border-color 0.2s;}
 .input-field:focus{border-color:rgba(168,85,247,0.9);}
 .input-field::placeholder{color:rgba(255,255,255,0.25)}
 .hint{font-size:10px;margin-top:5px;text-align:right;min-height:14px;color:#888}
-
 /* Boutons */
 .btn{width:100%;padding:15px;border:none;border-radius:14px;font-size:17px;font-family:'Bangers',cursive;letter-spacing:2px;cursor:pointer;color:#fff;margin-top:10px;touch-action:manipulation;transition:all 0.15s;display:block}
 .btn:active{transform:scale(0.97);opacity:0.85}
 .btn-cyan{background:linear-gradient(135deg,#0ea5e9,#0284c7);box-shadow:0 4px 20px rgba(14,165,233,0.4)}
 .btn-play{background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 4px 20px rgba(22,163,74,0.4)}
-
-/* Hors Telegram */
-.not-tg{background:rgba(100,100,100,0.1);border:1px solid rgba(150,150,150,0.2);border-radius:14px;padding:20px 16px;text-align:center}
-.not-tg .ico{font-size:38px;margin-bottom:10px}
-.not-tg p{font-size:13px;color:#aaa;line-height:1.7;margin-bottom:12px}
-.not-tg .steps{font-size:12px;color:#c9aaee;text-align:left;line-height:2.2}
-.not-tg a{color:#FFD700;font-weight:bold;text-decoration:none}
-.not-tg .cmd{display:inline-block;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3);border-radius:5px;padding:1px 8px;color:#FFD700;font-family:monospace;font-size:12px}
-
 .loading{color:#c9aaee;font-size:12px;margin:6px 0;text-align:center;min-height:16px}
 </style>
 </head>
 <body>
 <div class="card">
-
-  <!-- Back to game — fonctionne toujours via tg.close() -->
-  <button class="back-btn" onclick="goBack()">Back to game</button>
+  <button class="back-btn" id="backBtn" onclick="goBack()">Back to game</button>
 
   <div class="header">
     <div class="logo">🐓</div>
@@ -68,25 +49,9 @@ body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One
     <p class="sub">Connect your Solana address.<br>Hold <b>$FRANC</b> → all bonuses unlock instantly!<br><b>10 lives</b> &bull; <b>+1 life</b>/100 eggs &bull; <b style="color:#00eeff">triple shot</b></p>
   </div>
 
-  <!-- Status bar (si déjà lié) -->
   <div class="status-bar" id="statusBar"></div>
 
-  <!-- Hors Telegram -->
-  <div id="secNotTg" style="display:none">
-    <div class="not-tg">
-      <div class="ico">📱</div>
-      <p>Open this page <b style="color:#fff">inside Telegram</b> to connect your wallet.</p>
-      <div class="steps">
-        <b>Direct link:</b><br>
-        <a href="https://t.me/FrancisLeCoqBot/wallet">t.me/FrancisLeCoqBot/wallet</a><br><br>
-        <b>Via bot:</b><br>
-        <a href="https://t.me/FrancisLeCoqBot">@FrancisLeCoqBot</a> → send <span class="cmd">/connect</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Formulaire (dans Telegram) -->
-  <div id="secMain" style="display:none">
+  <div id="mainSection">
     <div class="opt-head">
       <div class="opt-num">1</div>
       <div class="opt-title">ENTER YOUR WALLET ADDRESS</div>
@@ -103,23 +68,26 @@ body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One
 </div>
 <script>
 const BACKEND  = 'https://mubqtnqulpyehkgubhnh.supabase.co/functions/v1';
+const GAME_URL = 'https://franclecoq.github.io/FrancRun/';
+const MINIAPP  = 'https://t.me/FrancisLeCoqBot/wallet';
+
 const tg = window.Telegram?.WebApp;
-if(tg){tg.ready();tg.expand();}
 
-const statusBar = document.getElementById('statusBar');
-const secNotTg  = document.getElementById('secNotTg');
-const secMain   = document.getElementById('secMain');
-
-window.addEventListener('load', async()=>{
+// Si pas dans Telegram → redirige directement vers la Mini App
+// L'utilisateur verra la vraie page wallet avec initData
+window.addEventListener('load', ()=>{
   if(!tg?.initData){
-    secNotTg.style.display='block';
+    // Redirige vers la Mini App Telegram — pas de page d'erreur
+    window.location.replace('https://t.me/FrancisLeCoqBot/wallet');
     return;
   }
-  secMain.style.display='block';
-  await checkStatus();
+  tg.ready();
+  tg.expand();
+  checkStatus();
 });
 
 async function checkStatus(){
+  const bar=document.getElementById('statusBar');
   try{
     const res=await fetch(BACKEND+'/check-franc',{
       method:'POST',headers:{'Content-Type':'application/json'},
@@ -128,17 +96,15 @@ async function checkStatus(){
     const d=await res.json();
     if(d.walletLinked && d.hasFranc){
       const bal=d.balance?Number(d.balance).toLocaleString():'?';
-      const short=d.walletAddress||'';
-      statusBar.className='status-bar franc';
-      statusBar.innerHTML=`✅ <b style="color:#a3e635">$FRANC detected!</b> ${bal} $FRANC &bull; <b style="color:#FFD700">${d.lives} lives</b> active<br><span style="font-size:10px;color:#6ee7b7">${short}</span>`;
-      statusBar.style.display='block';
-    } else if(d.walletLinked && !d.hasFranc){
-      const short=d.walletAddress||'';
-      statusBar.className='status-bar no-franc';
-      statusBar.innerHTML=`⚠️ Wallet connected — no $FRANC found<br><span style="font-size:10px">${short}</span>`;
-      statusBar.style.display='block';
+      bar.className='status-bar franc';
+      bar.innerHTML=`✅ <b style="color:#a3e635">$FRANC detected!</b> ${bal} $FRANC &bull; <b style="color:#FFD700">${d.lives} lives</b> active<br><span style="font-size:10px;color:#6ee7b7">${d.walletAddress||''}</span>`;
+      bar.style.display='block';
+    } else if(d.walletLinked){
+      bar.className='status-bar no-franc';
+      bar.innerHTML=`⚠️ Wallet connected — no $FRANC found<br><span style="font-size:10px">${d.walletAddress||''}</span>`;
+      bar.style.display='block';
     }
-  }catch(e){ /* silencieux */ }
+  }catch(e){}
 }
 
 function validateAddr(input){
@@ -146,23 +112,14 @@ function validateAddr(input){
   const valid=/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
   const btn=document.getElementById('linkBtn');
   const hint=document.getElementById('addrHint');
-  if(valid){
-    input.style.borderColor='rgba(163,230,53,0.7)';
-    hint.textContent='✅ Valid address';hint.style.color='#86efac';
-    btn.disabled=false;btn.style.opacity='1';
-  } else {
-    input.style.borderColor=val.length>5?'rgba(255,80,80,0.6)':'rgba(168,85,247,0.4)';
-    hint.textContent=val.length>5?'❌ Invalid address':'Solana address — 32 to 44 characters';
-    hint.style.color=val.length>5?'#fca5a5':'#888';
-    btn.disabled=true;btn.style.opacity='0.5';
-  }
+  if(valid){input.style.borderColor='rgba(163,230,53,0.7)';hint.textContent='✅ Valid address';hint.style.color='#86efac';btn.disabled=false;btn.style.opacity='1';}
+  else{input.style.borderColor=val.length>5?'rgba(255,80,80,0.6)':'rgba(168,85,247,0.4)';hint.textContent=val.length>5?'❌ Invalid address':'Solana address — 32 to 44 characters';hint.style.color=val.length>5?'#fca5a5':'#888';btn.disabled=true;btn.style.opacity='0.5';}
 }
 
 async function doLink(){
   const address=(document.getElementById('walletInput')?.value||'').trim();
   if(!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address))return;
-  const btn=document.getElementById('linkBtn');
-  const msg=document.getElementById('linkMsg');
+  const btn=document.getElementById('linkBtn');const msg=document.getElementById('linkMsg');
   btn.textContent='⏳ Linking...';btn.disabled=true;btn.style.opacity='0.6';
   msg.textContent='Checking $FRANC balance on Solana...';
   try{
@@ -179,10 +136,7 @@ async function doLink(){
       document.getElementById('addrHint').style.color='#888';
       btn.disabled=true;btn.style.opacity='0.5';
       await checkStatus();
-      // Ferme automatiquement après 1.5s si $FRANC détecté
-      if(data.hasFranc){
-        setTimeout(()=>goBack(),1500);
-      }
+      if(data.hasFranc) setTimeout(()=>goBack(),1200);
     } else {
       msg.textContent='❌ '+(data.error||'Error. Please try again.');
       btn.textContent='✅ Link my wallet';btn.disabled=false;btn.style.opacity='1';
@@ -193,15 +147,9 @@ async function doLink(){
   }
 }
 
-// goBack — ferme la WebView et retourne au jeu
 function goBack(){
-  if(tg){
-    tg.close();
-  } else {
-    // Fallback si ouvert hors Telegram
-    if(document.referrer) window.location.href=document.referrer;
-    else window.history.back();
-  }
+  if(tg) tg.close();
+  else window.location.href=GAME_URL;
 }
 </script>
 </body>
