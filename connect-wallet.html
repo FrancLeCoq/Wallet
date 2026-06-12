@@ -23,9 +23,9 @@ body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One
 .flag:active{transform:scale(0.9)}
 .flag-label{font-size:8px;text-align:center;color:#9a7bc8;margin-top:3px;letter-spacing:1px;font-family:'Bangers',cursive}
 
-.coq-wrap{position:relative;width:140px;height:196px;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;}
-.coq-img{width:100%;height:auto;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.5));animation:breathe 3.4s ease-in-out infinite;transform-origin:50% 90%;will-change:transform;}
-@keyframes breathe{0%,100%{transform:scale(1) translateY(0) rotate(-0.6deg)}50%{transform:scale(1.035) translateY(-3px) rotate(0.6deg)}}
+.coq-wrap{position:relative;width:54px;height:54px;display:flex;align-items:flex-end;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;overflow:visible;}
+.coq-img{width:auto;height:52px;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));animation:breathe 3.4s ease-in-out infinite;transform-origin:50% 90%;will-change:transform;}
+@keyframes breathe{0%,100%{transform:scale(1) translateY(0) rotate(-1deg)}50%{transform:scale(1.06) translateY(-1.5px) rotate(1deg)}}
 .coq-wrap.tapped .coq-img{animation:squish 0.32s ease}
 @keyframes squish{0%{transform:scale(1)}35%{transform:scale(0.9,1.08)}70%{transform:scale(1.06,0.94)}100%{transform:scale(1)}}
 
@@ -34,8 +34,8 @@ body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One
 .header .sub b{color:#FFD700}
 
 /* particules tap */
-.particle{position:absolute;pointer-events:none;font-size:22px;z-index:50;animation:fly 1s ease-out forwards;will-change:transform,opacity}
-@keyframes fly{0%{opacity:1;transform:translate(0,0) scale(0.6) rotate(0deg)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(var(--rot))}}
+.particle{position:absolute;pointer-events:none;font-size:22px;z-index:50;animation:fly 1.25s ease-out forwards;will-change:transform,opacity}
+@keyframes fly{0%{opacity:1;transform:translate(0,0) scale(0.5) rotate(0deg)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.4) rotate(var(--rot))}}
 
 /* ── Status ── */
 .status-bar{border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:12px;line-height:1.6;display:none}
@@ -233,20 +233,20 @@ function tapCoq(e){
   const rect=wrap.getBoundingClientRect();
   const x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
   const y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
-  const n=4+Math.floor(Math.random()*3);
+  const n=5+Math.floor(Math.random()*3);
   for(let i=0;i<n;i++){
     const p=document.createElement('div');
     p.className='particle';
     p.textContent=TAP_EMOJIS[Math.floor(Math.random()*TAP_EMOJIS.length)];
     p.style.left=x+'px';p.style.top=y+'px';
-    const ang=(-90+(Math.random()*80-40))*Math.PI/180;
-    const dist=50+Math.random()*55;
+    const ang=(-90+(Math.random()*70-35))*Math.PI/180;
+    const dist=130+Math.random()*90;               // envol bien plus haut
     p.style.setProperty('--dx',Math.cos(ang)*dist+'px');
-    p.style.setProperty('--dy',(Math.sin(ang)*dist-20)+'px');
-    p.style.setProperty('--rot',(Math.random()*120-60)+'deg');
-    p.style.fontSize=(16+Math.random()*12)+'px';
+    p.style.setProperty('--dy',(Math.sin(ang)*dist-40)+'px');
+    p.style.setProperty('--rot',(Math.random()*160-80)+'deg');
+    p.style.fontSize=(15+Math.random()*11)+'px';
     wrap.appendChild(p);
-    setTimeout(()=>p.remove(),1000);
+    setTimeout(()=>p.remove(),1250);
   }
 }
 
