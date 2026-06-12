@@ -139,7 +139,7 @@ body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One
     <input class="input-field" id="cbInput" type="text" placeholder="Paste address for cashback…"
       oninput="validateCb(this)" autocomplete="off" autocorrect="off" spellcheck="false"/>
     <div class="hint" id="cbHint"></div>
-    <button class="btn btn-stars" id="starsBtn" onclick="buyStars()" disabled>⭐ <span id="starsBtnTxt">Unlock — 200 ⭐</span></button>
+    <button class="btn btn-stars" id="starsBtn" onclick="buyStars()">⭐ <span id="starsBtnTxt">Unlock — 100 ⭐</span></button>
     <div class="loading" id="starsMsg"></div>
   </div>
 
@@ -162,7 +162,7 @@ const I18N = {
     opt2Title:'PASTE SOLANA ADDRESS',
     opt2Desc:'Paste your Solana address manually. Hold $FRANC → everything unlocks.',
     opt3Title:'UNLOCK WITH STARS',
-    opt3Desc:'Unlock the whole universe forever for 200 ⭐ (~2€) — and get a big $FRANC cashback! Paste the address where you want your cashback sent.',
+    opt3Desc:'Unlock the whole universe forever for 100 ⭐ (~2.29€) — and get 50 ⭐ worth of $FRANC cashback! Address optional — you can claim it later.',
     solPlaceholder:'Paste your Solana address…',
     cbPlaceholder:'Paste address for cashback…',
     solHintDefault:'Solana address — 32 to 44 characters',
@@ -171,7 +171,7 @@ const I18N = {
     tonHintDefault:'TON address (UQ… or EQ…)',
     tonHintValid:'✅ Valid TON address',
     tonHintInvalid:'❌ Invalid TON address',
-    tonBtn:'Connect TON', solBtn:'Link Solana', starsBtn:'Unlock — 200 ⭐',
+    tonBtn:'Connect TON', solBtn:'Link Solana', starsBtn:'Unlock — 100 ⭐',
     linking:'Checking $FRANC balance…',
     tonSoon:'TON connect — available at launch 🚀',
     starsSoon:'Stars purchase — available soon ⭐',
@@ -185,7 +185,7 @@ const I18N = {
     opt2Title:'COLLER ADRESSE SOLANA',
     opt2Desc:'Colle ton adresse Solana manuellement. Détiens du $FRANC → tout se débloque.',
     opt3Title:'DÉBLOQUER AVEC ÉTOILES',
-    opt3Desc:'Débloque tout l\'univers à vie pour 200 ⭐ (~2€) — et reçois un gros cashback en $FRANC ! Colle l\'adresse où envoyer ton cashback.',
+    opt3Desc:'Débloque tout l\'univers à vie pour 100 ⭐ (~2,29€) — et reçois 50 ⭐ d\'équivalent en $FRANC ! Adresse facultative — réclamable plus tard.',
     solPlaceholder:'Colle ton adresse Solana…',
     cbPlaceholder:'Colle l\'adresse pour le cashback…',
     solHintDefault:'Adresse Solana — 32 à 44 caractères',
@@ -326,23 +326,37 @@ function setCbChain(c){
   document.getElementById('cbSOL').classList.toggle('sel',c==='sol');
   document.getElementById('cbInput').value='';
   document.getElementById('cbHint').textContent='';
-  document.getElementById('starsBtn').disabled=true;
+  document.getElementById('starsBtn').disabled=false;
 }
 function isValidTon(a){return /^(UQ|EQ)[A-Za-z0-9_-]{46}$/.test(a.trim());}
 function validateCb(input){
   const val=input.value.trim();const btn=document.getElementById('starsBtn');const hint=document.getElementById('cbHint');
+  // Adresse OPTIONNELLE : vide = bouton actif. Saisie invalide = bouton bloqué.
+  if(val.length===0){
+    hint.textContent='';
+    input.style.borderColor='rgba(168,85,247,0.4)';
+    btn.disabled=false;
+    return;
+  }
   let valid;
-  if(cbChain==='ton'){valid=isValidTon(val);hint.textContent=valid?t('tonHintValid'):(val.length>5?t('tonHintInvalid'):t('tonHintDefault'));}
-  else{valid=/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);hint.textContent=valid?t('solHintValid'):(val.length>5?t('solHintInvalid'):t('solHintDefault'));}
-  hint.style.color=valid?'#86efac':(val.length>5?'#fca5a5':'#888');
-  input.style.borderColor=valid?'rgba(163,230,53,0.7)':(val.length>5?'rgba(255,80,80,0.6)':'rgba(168,85,247,0.4)');
+  if(cbChain==='ton'){valid=isValidTon(val);hint.textContent=valid?t('tonHintValid'):t('tonHintInvalid');}
+  else{valid=/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);hint.textContent=valid?t('solHintValid'):t('solHintInvalid');}
+  hint.style.color=valid?'#86efac':'#fca5a5';
+  input.style.borderColor=valid?'rgba(163,230,53,0.7)':'rgba(255,80,80,0.6)';
   btn.disabled=!valid;
 }
 function buyStars(){
   const msg=document.getElementById('starsMsg');
   const btn=document.getElementById('starsBtn');
   const addr=(document.getElementById('cbInput').value||'').trim();
-  if(!addr){return;}
+  // Adresse OPTIONNELLE : si saisie, elle doit être valide ; sinon on continue sans.
+  if(addr.length>0){
+    const ok = cbChain==='ton' ? isValidTon(addr) : /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(addr);
+    if(!ok){
+      msg.textContent=LANG==='fr'?'❌ Adresse invalide (ou laisse vide).':'❌ Invalid address (or leave empty).';
+      return;
+    }
+  }
   btn.disabled=true;btn.style.opacity='0.6';
   msg.textContent=LANG==='fr'?'Création de la facture…':'Creating invoice…';
   fetch(BACKEND+'/create-stars-invoice',{
