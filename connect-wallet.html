@@ -340,8 +340,42 @@ function validateCb(input){
 }
 function buyStars(){
   const msg=document.getElementById('starsMsg');
-  msg.textContent=t('starsSoon');
-  // Le câblage paiement Stars + enregistrement cashback sera branché à l'étape suivante.
+  const btn=document.getElementById('starsBtn');
+  const addr=(document.getElementById('cbInput').value||'').trim();
+  if(!addr){return;}
+  btn.disabled=true;btn.style.opacity='0.6';
+  msg.textContent=LANG==='fr'?'Création de la facture…':'Creating invoice…';
+  fetch(BACKEND+'/create-stars-invoice',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({initData:tg.initData,chain:cbChain,address:addr})
+  }).then(r=>r.json()).then(data=>{
+    if(data.ok && data.invoiceLink){
+      msg.textContent='';
+      btn.disabled=false;btn.style.opacity='1';
+      // Ouvre la fenêtre de paiement Stars native de Telegram
+      if(tg?.openInvoice){
+        tg.openInvoice(data.invoiceLink, (status)=>{
+          if(status==='paid'){
+            msg.textContent=LANG==='fr'?'✅ Débloqué ! Cashback en route.':'✅ Unlocked! Cashback on its way.';
+            checkStatus();
+            setTimeout(goBack,1800);
+          } else if(status==='failed'){
+            msg.textContent=LANG==='fr'?'❌ Paiement échoué.':'❌ Payment failed.';
+          } else if(status==='cancelled'){
+            msg.textContent=LANG==='fr'?'Paiement annulé.':'Payment cancelled.';
+          }
+        });
+      } else {
+        window.open(data.invoiceLink,'_blank');
+      }
+    } else {
+      msg.textContent='❌ '+(data.error||'Error');
+      btn.disabled=false;btn.style.opacity='1';
+    }
+  }).catch(()=>{
+    msg.textContent=LANG==='fr'?'❌ Erreur de connexion.':'❌ Connection error.';
+    btn.disabled=false;btn.style.opacity='1';
+  });
 }
 
 /* ═══════════ NAV ═══════════ */
