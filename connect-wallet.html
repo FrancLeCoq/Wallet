@@ -383,7 +383,7 @@ function buyStars(){
         window.open(data.invoiceLink,'_blank');
       }
     } else {
-      msg.textContent='❌ '+(data.error||data.message||data.detail||JSON.stringify(data).slice(0,120));
+      msg.textContent='❌ '+(data.error||data.message||data.detail||(LANG==='fr'?'Erreur inattendue.':'Unexpected error.'));
       btn.disabled=false;btn.style.opacity='1';
     }
   }).catch(()=>{
