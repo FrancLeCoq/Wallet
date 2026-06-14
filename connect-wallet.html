@@ -32,9 +32,13 @@ body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One
 .header h1{font-family:'Bangers',cursive;font-size:26px;color:#FFD700;letter-spacing:3px;text-shadow:0 0 20px #FFD700;text-align:center;margin-bottom:4px}
 .header .sub{font-size:11px;color:#c9aaee;line-height:1.6;text-align:center;margin-bottom:16px}
 .header .sub b{color:#FFD700}
-.sub-lead{display:block;text-align:center;font-weight:bold;color:#e9d5ff;margin-bottom:8px}
-.sub-line{display:flex;align-items:center;justify-content:flex-end;gap:7px;text-align:right;margin:5px 0}
-.sub-num{background:linear-gradient(135deg,#6d28d9,#4c1d95);border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:12px;color:#fff;flex-shrink:0}
+.sub-lead{display:block;text-align:center;font-weight:bold;color:#e9d5ff;margin-bottom:10px}
+.sub-table{width:100%;border-collapse:separate;border-spacing:0;margin:0 auto 4px;border-radius:12px;overflow:hidden;border:1px solid rgba(180,100,255,0.25)}
+.sub-table td{padding:9px 10px;vertical-align:middle;background:rgba(109,40,217,0.10)}
+.sub-table tr:not(:last-child) td{border-bottom:1px solid rgba(180,100,255,0.18)}
+.sub-table td.num-cell{width:54px;text-align:center;white-space:nowrap}
+.sub-table td.txt-cell{text-align:left;line-height:1.45}
+.sub-num{background:linear-gradient(135deg,#6d28d9,#4c1d95);border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:13px;color:#fff;flex-shrink:0;margin:0 1px}
 
 /* particules tap */
 .particle{position:absolute;pointer-events:none;font-size:22px;z-index:50;animation:fly 1.25s ease-out forwards;will-change:transform,opacity}
@@ -63,6 +67,7 @@ body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One
 .btn-ton{background:linear-gradient(135deg,#0098EA,#0077b6);box-shadow:0 4px 18px rgba(0,152,234,0.4)}
 .btn-cyan{background:linear-gradient(135deg,#0ea5e9,#0284c7);box-shadow:0 4px 18px rgba(14,165,233,0.4)}
 .btn-stars{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 18px rgba(245,158,11,0.45)}
+.btn-stars.done{background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 4px 18px rgba(34,197,94,0.45);cursor:default}
 .loading{color:#c9aaee;font-size:11px;margin:6px 0 0;text-align:center;min-height:15px}
 
 .divider{display:flex;align-items:center;gap:10px;margin:4px 0 12px;color:#7c6aa0;font-size:10px;font-family:'Bangers',cursive;letter-spacing:2px}
@@ -159,7 +164,7 @@ let LANG = localStorage.getItem('francCoqLang') || 'en';
 const I18N = {
   en:{
     back:'Back to game',
-    sub:'<span class="sub-lead">🔓 Pick one of the 3 ways to unlock the whole henhouse universe 🔓</span><span class="sub-line"><span class="sub-num">1</span><span class="sub-num">2</span><span>Hold some <b>$FRANC</b>? Connect your wallet to verify — it\'s free!</span></span><span class="sub-line"><span class="sub-num">3</span><span>No <b>$FRANC</b>? Unlock the henhouse for 100 ⭐ and get the equivalent as <b>$FRANC</b> cashback.</span></span>',
+    sub:'<span class="sub-lead">🔓 Pick one of the 3 ways to unlock the whole henhouse universe 🔓</span><table class="sub-table"><tr><td class="num-cell"><span class="sub-num">1</span><span class="sub-num">2</span></td><td class="txt-cell">Hold some <b>$FRANC</b>? Connect your wallet to verify — it\'s free!</td></tr><tr><td class="num-cell"><span class="sub-num">3</span></td><td class="txt-cell">No <b>$FRANC</b>? Unlock the henhouse for 100 ⭐ and get the equivalent as <b>$FRANC</b> cashback.</td></tr></table>',
     opt1Title:'CONNECT TON WALLET',
     opt1Desc:'One tap — your Telegram TON wallet links automatically. Hold $FRANC → everything unlocks.',
     opt2Title:'PASTE SOLANA ADDRESS',
@@ -174,7 +179,7 @@ const I18N = {
     tonHintDefault:'TON address (UQ… or EQ…)',
     tonHintValid:'✅ Valid TON address',
     tonHintInvalid:'❌ Invalid TON address',
-    tonBtn:'Connect TON', solBtn:'Link Solana', starsBtn:'Unlock — 100 ⭐',
+    tonBtn:'Connect TON', solBtn:'Link Solana', starsBtn:'Unlock — 100 ⭐', starsBtnDone:'Unlocked — 100 ⭐',
     linking:'Checking $FRANC balance…',
     tonSoon:'TON connect — available at launch 🚀',
     starsSoon:'Stars purchase — available soon ⭐',
@@ -182,7 +187,7 @@ const I18N = {
   },
   fr:{
     back:'Retour au jeu',
-    sub:'<span class="sub-lead">🔓 Choisis l\'une des 3 façons de débloquer tout l\'univers du poulailler 🔓</span><span class="sub-line"><span class="sub-num">1</span><span class="sub-num">2</span><span>Tu détiens du <b>$FRANC</b> ? Connecte ton wallet pour vérification — c\'est gratuit !</span></span><span class="sub-line"><span class="sub-num">3</span><span>Pas de <b>$FRANC</b> ? Débloque le poulailler pour 100 ⭐ et reçois l\'équivalent en cashback <b>$FRANC</b>.</span></span>',
+    sub:'<span class="sub-lead">🔓 Choisis l\'une des 3 façons de débloquer tout l\'univers du poulailler 🔓</span><table class="sub-table"><tr><td class="num-cell"><span class="sub-num">1</span><span class="sub-num">2</span></td><td class="txt-cell">Tu détiens du <b>$FRANC</b> ? Connecte ton wallet pour vérification — c\'est gratuit !</td></tr><tr><td class="num-cell"><span class="sub-num">3</span></td><td class="txt-cell">Pas de <b>$FRANC</b> ? Débloque le poulailler pour 100 ⭐ et reçois l\'équivalent en cashback <b>$FRANC</b>.</td></tr></table>',
     opt1Title:'CONNECTER WALLET TON',
     opt1Desc:'Un tap — ton wallet TON Telegram se connecte automatiquement. Détiens du $FRANC → tout se débloque.',
     opt2Title:'COLLER ADRESSE SOLANA',
@@ -197,7 +202,7 @@ const I18N = {
     tonHintDefault:'Adresse TON (UQ… ou EQ…)',
     tonHintValid:'✅ Adresse TON valide',
     tonHintInvalid:'❌ Adresse TON invalide',
-    tonBtn:'Connecter TON', solBtn:'Lier Solana', starsBtn:'Débloquer — 100 ⭐',
+    tonBtn:'Connecter TON', solBtn:'Lier Solana', starsBtn:'Débloquer — 100 ⭐', starsBtnDone:'Débloqué — 100 ⭐',
     linking:'Vérification du solde $FRANC…',
     tonSoon:'Connexion TON — disponible au lancement 🚀',
     starsSoon:'Achat Étoiles — bientôt disponible ⭐',
@@ -264,8 +269,16 @@ async function checkStatus(){
     });
     const d=await res.json();
     const unlocked = d.unlocked ?? (d.walletLinked && d.hasFranc);
+    const sBtn=document.getElementById('starsBtn');
+    const sTxt=document.getElementById('starsBtnTxt');
     if(unlocked){
       const reason=d.reason||'solana';
+      if(reason==='stars' && sBtn){
+        sBtn.classList.add('done');
+        sBtn.disabled=true;
+        sBtn.style.opacity='1';
+        sTxt.textContent=t('starsBtnDone');
+      }
       const sym=reason==='ton'?'💎':(reason==='stars'?'⭐':'◎');
       const bal=d.balance?Number(d.balance).toLocaleString():'';
       bar.className='status-bar ok';
