@@ -32,6 +32,9 @@ body{background:linear-gradient(160deg,#0d0520,#1a0840);font-family:'Fredoka One
 .header h1{font-family:'Bangers',cursive;font-size:26px;color:#FFD700;letter-spacing:3px;text-shadow:0 0 20px #FFD700;text-align:center;margin-bottom:4px}
 .header .sub{font-size:11px;color:#c9aaee;line-height:1.6;text-align:center;margin-bottom:16px}
 .header .sub b{color:#FFD700}
+.sub-lead{display:block;text-align:center;font-weight:bold;color:#e9d5ff;margin-bottom:8px}
+.sub-line{display:flex;align-items:center;justify-content:flex-end;gap:7px;text-align:right;margin:5px 0}
+.sub-num{background:linear-gradient(135deg,#6d28d9,#4c1d95);border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:12px;color:#fff;flex-shrink:0}
 
 /* particules tap */
 .particle{position:absolute;pointer-events:none;font-size:22px;z-index:50;animation:fly 1.25s ease-out forwards;will-change:transform,opacity}
@@ -156,7 +159,7 @@ let LANG = localStorage.getItem('francCoqLang') || 'en';
 const I18N = {
   en:{
     back:'Back to game',
-    sub:'Hold <b>$FRANC</b>, connect your wallet to verify and unlock the whole henhouse universe.<br>Don\'t panic if you don\'t have any $FRANC — you can unlock with Telegram ⭐ and receive the amount as cashback.<br>Below, pick one of the 3 ways to unlock 🚀',
+    sub:'<span class="sub-lead">🔓 Pick one of the 3 ways to unlock the whole henhouse universe 🔓</span><span class="sub-line"><span class="sub-num">1</span><span class="sub-num">2</span><span>Hold some <b>$FRANC</b>? Connect your wallet to verify — it\'s free!</span></span><span class="sub-line"><span class="sub-num">3</span><span>No <b>$FRANC</b>? Unlock the henhouse for 100 ⭐ and get the equivalent as <b>$FRANC</b> cashback.</span></span>',
     opt1Title:'CONNECT TON WALLET',
     opt1Desc:'One tap — your Telegram TON wallet links automatically. Hold $FRANC → everything unlocks.',
     opt2Title:'PASTE SOLANA ADDRESS',
@@ -179,7 +182,7 @@ const I18N = {
   },
   fr:{
     back:'Retour au jeu',
-    sub:'Détiens du <b>$FRANC</b>, connecte ton wallet pour vérifier et débloque tout l\'univers du poulailler.<br>Ne panique pas si tu n\'as pas de $FRANC, le déblocage est possible avec les ⭐ Telegram et reçois le montant en cashback.<br>Ci-dessous, choisis l\'une des 3 possibilités de déblocage 🚀',
+    sub:'<span class="sub-lead">🔓 Choisis l\'une des 3 façons de débloquer tout l\'univers du poulailler 🔓</span><span class="sub-line"><span class="sub-num">1</span><span class="sub-num">2</span><span>Tu détiens du <b>$FRANC</b> ? Connecte ton wallet pour vérification — c\'est gratuit !</span></span><span class="sub-line"><span class="sub-num">3</span><span>Pas de <b>$FRANC</b> ? Débloque le poulailler pour 100 ⭐ et reçois l\'équivalent en cashback <b>$FRANC</b>.</span></span>',
     opt1Title:'CONNECTER WALLET TON',
     opt1Desc:'Un tap — ton wallet TON Telegram se connecte automatiquement. Détiens du $FRANC → tout se débloque.',
     opt2Title:'COLLER ADRESSE SOLANA',
