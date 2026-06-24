@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0d0520">
 <title>Connect — Francis Le Coq</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@2/dist/tonconnect-ui.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka+One&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -327,11 +328,93 @@ async function linkSol(){
   }catch(_){msg.textContent='❌ Connection error';btn.disabled=false;btn.style.opacity='1';}
 }
 
-/* ═══════════ OPTION 1 — TON Connect (placeholder câblage étape suivante) ═══════════ */
-function connectTon(){
+/* ═══════════ OPTION 1 — TON Connect (réel) ═══════════ */
+const TON_MANIFEST = 'https://franclecoq.github.io/Wallet/tonconnect-manifest.json';
+let tonUI = null;          // instance TonConnectUI
+let tonLinking = false;    // anti-double envoi
+
+// Init paresseuse de TON Connect (au premier clic)
+function getTonUI(){
+  if(tonUI) return tonUI;
+  if(!window.TON_CONNECT_UI){
+    document.getElementById('tonMsg').textContent='❌ '+(LANG==='fr'?'SDK TON non chargé':'TON SDK not loaded');
+    return null;
+  }
+  tonUI = new TON_CONNECT_UI.TonConnectUI({ manifestUrl: TON_MANIFEST });
+  // Réagit à toute connexion/déconnexion du wallet
+  tonUI.onStatusChange((wallet)=>{
+    if(wallet && wallet.account && wallet.account.address){
+      sendTonAddress(wallet.account.address);
+    }
+  });
+  // Si une session était déjà active au chargement
+  tonUI.connectionRestored.then((ok)=>{
+    const acc = tonUI.account;
+    if(ok && acc && acc.address) sendTonAddress(acc.address);
+  });
+  return tonUI;
+}
+
+// Convertit l'adresse raw (0:...) en format user-friendly (UQ.../EQ...)
+// que ton backend attend. La lib expose toUserFriendlyAddress.
+function tonToFriendly(raw){
+  try{
+    if(window.TON_CONNECT_UI && TON_CONNECT_UI.toUserFriendlyAddress){
+      return TON_CONNECT_UI.toUserFriendlyAddress(raw, false); // false = mainnet bounceable EQ
+    }
+  }catch(_){}
+  return raw; // au pire on envoie le raw, le backend gère
+}
+
+// Envoie l'adresse TON au MÊME endpoint que Solana (/link-wallet, champ wallet)
+async function sendTonAddress(rawAddress){
+  if(tonLinking) return;
+  tonLinking = true;
   const msg=document.getElementById('tonMsg');
-  msg.textContent=t('tonSoon');
-  // Le câblage TON Connect réel sera branché à l'étape suivante.
+  const btn=document.getElementById('tonBtn');
+  const address = tonToFriendly(rawAddress);
+  try{
+    msg.textContent = t('linking');
+    if(btn){ btn.disabled=true; btn.style.opacity='0.6'; }
+    const res=await fetch(BACKEND+'/link-wallet',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({initData:tg.initData,wallet:address})
+    });
+    const data=await res.json();
+    if(data.ok){
+      msg.textContent='';
+      if(btn){ btn.disabled=true; btn.style.opacity='1'; }
+      await checkStatus();
+      if(data.hasFranc) setTimeout(goBack,1200);
+    }else{
+      msg.textContent='❌ '+(data.error||'Error');
+      if(btn){ btn.disabled=false; btn.style.opacity='1'; }
+    }
+  }catch(_){
+    msg.textContent='❌ Connection error';
+    if(btn){ btn.disabled=false; btn.style.opacity='1'; }
+  }finally{
+    tonLinking = false;
+  }
+}
+
+// Clic sur le bouton : ouvre le modal de connexion wallet
+async function connectTon(){
+  const ui = getTonUI();
+  if(!ui) return;
+  const msg=document.getElementById('tonMsg');
+  try{
+    // Si déjà connecté, on relance directement l'envoi
+    if(ui.account && ui.account.address){
+      sendTonAddress(ui.account.address);
+      return;
+    }
+    msg.textContent = LANG==='fr'?'Ouverture du wallet…':'Opening wallet…';
+    await ui.openModal();
+    // L'adresse remonte via onStatusChange une fois l'utilisateur connecté.
+  }catch(_){
+    msg.textContent='❌ '+(LANG==='fr'?'Connexion annulée':'Connection cancelled');
+  }
 }
 
 /* ═══════════ OPTION 3 — Stars + cashback (placeholder câblage étape suivante) ═══════════ */
